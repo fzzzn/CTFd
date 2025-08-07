@@ -1,8 +1,5 @@
-@import 'colors';
-
 :root {
-    // --background-gradient: linear-gradient(to bottom, #{$background-gradient-top}, #{$background-gradient-bottom});
-    --background-gradient: radial-gradient(circle at center bottom, #{$background}, #{$home-gradient-end});
+    --background-gradient: linear-gradient(to bottom, #dddddd, #C6FDF1);
 }
 
 .triangleContainer {
@@ -15,10 +12,8 @@
     padding: 1.5rem;
     box-sizing: border-box;
     position: relative;
-    background-image: var(--low-poly-bg), var(--background-gradient);
-    // background-size: 3.5rem, auto;
-    background-blend-mode: overlay;
-    background-position: center, bottom center;
+    background-image: var(--triangular-bg), var(--background-gradient);
+    background-size: 3.5rem, auto;
     // animation: marquee 20s infinite linear;
     display: flex;
     flex-direction: column;
@@ -63,7 +58,7 @@
 
     .contentWrapper {
         flex-grow: 1;
-        background-color: $background;
+        background-color: #fff;
         border-radius: 1rem;
         padding: 1rem;
         height: 0;
@@ -93,7 +88,7 @@
             }
 
             margin-left: -1rem;
-            filter: drop-shadow(3px 3px 0px $title-shadow);
+            filter: drop-shadow(3px 3px 0px $accent-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -102,7 +97,7 @@
         .title {
             margin: 0;
             line-height: 0.7em;
-            color: $primary-fg;
+            color: #444463;
             text-transform: uppercase;
             letter-spacing: -0.05em;
             margin-left: 1.5rem;
@@ -117,12 +112,12 @@
             padding: 0;
             padding-left: 1.5rem;
             padding-right: 1rem;
-            background-color: $primary-fg;
+            background-color: #444463;
             height: 2.2rem;
             width: 15rem;
             font-size: 1.25rem;
             font-weight: 550;
-            color: $background;
+            color: white;
             position: relative;
 
             > span {
@@ -171,7 +166,7 @@
             left: 0;
             bottom: 0;
             width: $tab-width;
-            border-right: 5px solid $background;
+            border-right: 5px solid white;
             flex-direction: column;
             overflow-x: hidden;
             overflow-y: auto;
@@ -183,7 +178,7 @@
             left: 0;
             right: 0;
             height: $tab-height;
-            border-bottom: 5px solid $background;
+            border-bottom: 5px solid white;
             flex-direction: row;
             overflow-y: hidden;
             overflow-x: auto;
@@ -191,7 +186,7 @@
         }
 
         .tab {
-            background-color: $accent-color-bright;
+            background-color: #75FBDE;
             color: $primary-fg;
             min-height: $tab-height;
             min-width: $tab-width;
@@ -207,11 +202,11 @@
             font-size: 1.15rem;
 
             &:hover {
-                background-color: color.scale($accent-color-bright, $lightness: -10%);
+                background-color: color.scale(#75FBDE, $lightness: -30%);
             }
 
             &.active {
-                background: var(--stripe-border), $active-selection-background;
+                background: var(--stripe-border), #F9DE6C;
                 background-repeat: repeat-x;
                 background-size: auto 15px;
             }
@@ -338,9 +333,9 @@
     }
 
     .statusItem {
-        background-color: $primary-fg;
+        background-color: #444463;
         padding: 0.3rem 0.75rem;
-        color: $background;
+        color: white;
         border-radius: 1rem;
         display: inline-flex;
         align-items: center;
@@ -348,7 +343,7 @@
         margin-right: 0.25rem;
         
         > iconify-icon {
-            color: $accent-a30;
+            color: $accent-color;
             font-size: 1.1em;
         }
     }
@@ -390,7 +385,7 @@
         right: 1.5rem;
         padding: 1px 7px;
         font-size: 0.8em;
-        background-color: $countdown-background;
+        background-color: #F4B73F;
         border-radius: 6px;
         font-variant-numeric: tabular-nums;
     }

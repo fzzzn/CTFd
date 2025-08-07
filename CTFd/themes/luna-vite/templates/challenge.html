@@ -127,7 +127,7 @@ Configs.theme_settings["tag_difficulty_5"]: 5,
       <input type="text" name="submission" id="challenge-input"
         aria-label="{{ gettext('Challenge is already solved') if solved_by_me else gettext('Enter flag') }}"
         @keyup.enter="submitChallenge()" x-model="submission" {{ 'disabled' if solved_by_me else '' }}
-        placeholder="{{ gettext('Already solved.') if solved_by_me else (Configs.theme_settings['flag_placeholder'] or 'SEKAI{…}') }}">
+        placeholder="{{ gettext('Already solved.') if solved_by_me else (Configs.theme_settings['flag_placeholder'] or 'SSS{…}') }}">
       <iconify-icon icon="ic:baseline-edit" class="inputIcon" aria-hidden="true"></iconify-icon>
     </div>
     {% endblock %}

@@ -1,5 +1,3 @@
-@import 'colors';
-
 $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
 
 .page-challenges-listing {
@@ -41,19 +39,19 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
     display: inline-block;
     width: 0.7rem;
     height: 0.7rem;
-    background: $primary-fg;
-    border: 2px solid $primary-fg;
+    background: #444463;
+    border: 2px solid #444463;
     border-radius: 3px;
     transform: rotate(45deg) translate(2px, 1px);
     margin-right: 0.4rem;
     
     &.solved {
-        background: linear-gradient(135deg, $solved-diamond-0, $solved-diamond-1);
+        background: linear-gradient(135deg, #FFEFB5, #FFD642);
         box-shadow: inset -1px -1px 0px 0px rgb(0 0 0 / 30%), inset 1px 1px 0px 0px rgb(255 255 255 / 75%);
     }
     
     &.first {
-        background: linear-gradient(135deg, $first-diamond-0, $first-diamond-1, $first-diamond-2);
+        background: linear-gradient(135deg, #FB9CF7, #9CBFFF, #00FCBB);
         box-shadow: inset -1px -1px 0px 0px rgb(0 0 0 / 30%), inset 1px 1px 0px 0px rgb(255 255 255 / 75%);
     }
 }
@@ -89,7 +87,7 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
     }
 
     #challengesListWrapper {
-        background-color: $challenge-list-background;
+        background-color: color.scale($primary-fg, $alpha: -20%);
         height: 100%;
         position: relative;
         
@@ -154,14 +152,14 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
 
         &.highContrast {
             .challengeItem.solved {
-                background: linear-gradient(to bottom, $solved-diamond-0, $solved-diamond-1);
+                background: linear-gradient(to bottom, #FFEFB5, #FFD642);
                 .challengeDetails {
                     color: $primary-fg;
                 }
             }
 
             .challengeItem.solved.solvedFirst {
-                background: linear-gradient(to bottom, $first-diamond-0, $first-diamond-1, $first-diamond-2);
+                background: linear-gradient(to bottom, #FB9CF7, #9CBFFF, #00FCBB);
                 .challengeDetails {
                     color: $primary-fg;
                 }
@@ -238,7 +236,7 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
         text-align: start;
         height: 100px;
         box-sizing: border-box;
-        border-bottom: 2px solid $list-border;
+        border-bottom: 2px solid #858390;
         display: flex;
         font-family: $font-family;
         padding: 0;
@@ -292,7 +290,7 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
             display: none;
             position: absolute;
             top: -1rem;
-            background-color: $list-label;
+            background-color: #953D74;
             padding: 0.25rem 0.75rem;
             left: 0;
             border-radius: 5px;
@@ -309,9 +307,9 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
                 width: 0;
                 font-size: 0;
                 line-height: 0;
-                border-top: 14px solid $list-label;
-                border-bottom: 14px solid $list-label;
-                border-left: 14px solid $list-label;
+                border-top: 14px solid #953D74;
+                border-bottom: 14px solid #953D74;
+                border-left: 14px solid #953D74;
                 border-right: 14px solid transparent;
             }
         }
@@ -505,10 +503,8 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
             }
 
             @include media-sm {
-                background-image: var(--low-poly-bg), var(--background-gradient);
-                // background-size: 3.5rem, auto;
-                background-blend-mode: overlay;
-                background-position: center, bottom center;
+                background-image: var(--triangular-bg), var(--background-gradient);
+                background-size: 3.5rem, auto;
                 padding-bottom: 0;
                 min-height: 100%;
                 display: flex;
@@ -607,15 +603,15 @@ $challenges-width: max(30vw, calc((100vw - $tab-width) / 5 * 2));
 
         #sekaiMode {
             background-image: var(--halftone-bg-white);
-            background-color: $sekai-mode-background;
-            border-color: $sekai-mode-border;
+            background-color: #00FFDD;
+            border-color: #CBFFF7;
             position: relative;
         }
 
         #focusMode {
             background-image: var(--halftone-bg-white-25);
-            background-color: $focus-mode-background;
-            border-color: $focus-mode-border;
+            background-color: #FEA48F;
+            border-color: #FFD1C7;
         }
     }
 } 

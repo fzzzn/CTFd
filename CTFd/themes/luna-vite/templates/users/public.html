@@ -25,7 +25,9 @@
       <div class="profileIcon">
         {% set user_name = user.name | urlencode %}
         {% set user_name = user_name.replace('%20', '+') %}
-        <img width="80" height="80" class="cellBodyIcon" src="{{ user.gravatar('404') }}" data-fallback="https://api.dicebear.com/9.x/initials/svg?seed={{user_name}}&backgroundType=gradientLinear" onerror="this.src = this.dataset.fallback;this.onerror='';">
+	<img width="80" height="80" class="cellBodyIcon" 
+	src="https://api.dicebear.com/7.x/initials/svg?seed={{ user.name }}">
+
       </div>
       <div class="profileMeta">
         <div class="profileMetaRow">
@@ -39,7 +41,6 @@
           {% endif %}
         </div>
         
-        {% if Configs.user_mode == 'teams' %}
         <div class="profileMetaRow">
           <label class="chip tall" id="teamLabel">{% trans %}Team{% endtrans %}</label>
           <div class="profileMetaBox">{% if user.team_id %}{{ user.team.name }}{% else %}<em>No team</em>{% endif %}</div>
@@ -49,7 +50,6 @@
           </a>
           {% endif %}
         </div>
-        {% endif %}
 
       </div>
 
@@ -150,12 +150,9 @@
       </div>
     </div>
 
-    <div class="progressBarChart" :class="categoriesCount > 2 ? 'chart' : ''">
+    <div class="progressBarChart">
       <h3 class="sectionTitle">{% trans %}Category breakdown{% endtrans %}</h3>
-      <div id="score-graph" x-ref="categoryRadar" x-show="categoriesCount > 2" style="width: 100%; flex-grow: 1;">
-        Loading...
-      </div>
-      <div class="progress" x-show="categoriesCount < 2">
+      <div class="progress">
         <template x-for="category in getCategoryBreakdown()" :key="category.name">
           <div class="progress-bar" role="progressbar"
             :style="{ width: `${category.percent}%`, 'background-color': category.color }">
@@ -163,7 +160,7 @@
         </template>
       </div>
       <template x-for="category in getCategoryBreakdown()" :key="category.name">
-        <div class="progressBarLegend" x-show="categoriesCount < 2">
+        <div class="progressBarLegend">
           <svg height="16" width="16">
             <circle cx="8" cy="8" r="5" :fill="category.color" />
           </svg>

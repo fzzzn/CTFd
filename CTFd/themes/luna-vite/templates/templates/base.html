@@ -5,9 +5,10 @@
     <title>{{ Configs.ctf_name.replace('Sekai', 'Project SEKAI ') }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% set theme = Configs.theme_settings or {} %}
     <meta property="og:title" content="{{ Configs.ctf_name }}" />
-    <meta property="og:description" content="{{ Configs.theme_settings.get('social_desc', Configs.ctf_name.replace('Sekai', 'Project SEKAI ') + ' is yet another CTF contest brought to you by a yet another CTF team.') }}" />
-    <meta property="og:image" content="{{ Configs.theme_settings.get('social_banner', 'https://ProjectSEKAIctf.1a23.studio/twitter-card.png') }}" />
+    <meta property="og:description" content="{{ theme.get('social_desc', (Configs.ctf_name or 'CTF').replace('Sekai', 'Project SEKAI ') ~ ' is yet another CTF contest brought to you by a yet another CTF team.') }}" />
+    <meta property="og:image" content="{{ theme.get('social_banner', 'https://ProjectSEKAIctf.1a23.studio/twitter-card.png') }}" />
     <meta property="og:type" content="website" />
 	<link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}">
     <script src="https://unpkg.com/@ungap/has-own@0.1.1/min.js"></script>

@@ -24,7 +24,7 @@
           {% set team_name = standing.name | urlencode %}
           {% set team_name = team_name.replace('%20', '+') %}
           <div class="listItemDetailsIcon">
-            <img width="60" height="60" loading="lazy" class="cellBodyIcon" src="{{ standing.gravatar }}" data-fallback="https://api.dicebear.com/9.x/initials/svg?seed={{team_name}}&backgroundType=gradientLinear" onerror="this.src = this.dataset.fallback;this.onerror='';">
+	  <img width="80" height="80" class="cellBodyIcon" src="https://api.dicebear.com/7.x/initials/svg?seed={{ standing.name }}">
           </div>
           <div class="listItemDetails">
             
@@ -39,7 +39,7 @@
                 {% endif %}
               {% endif %}
             </div>
-            <div>{{ ngettext('%(solves)d solve', '%(solves)d solves', standing.count, solves=standing.count) }}</div>
+	   <div>{{ ngettext('%(solves)d solve', '%(solves)d solves', standing.count | int, solves=standing.count | int) }}</div>
           </div>
           <div class="listItemScore digits5">
             <span>

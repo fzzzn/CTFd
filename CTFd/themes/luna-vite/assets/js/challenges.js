@@ -39,6 +39,10 @@ dayjs.updateLocale('en', {
     }
 });
 
+
+window.init = window.init || {};
+window.init.themeSettings = window.init.themeSettings || {};
+
 const difficultyMapping = {
     [window.init.themeSettings.tag_difficulty_1]: 1,
     [window.init.themeSettings.tag_difficulty_2]: 2,
@@ -50,10 +54,10 @@ const difficultyMapping = {
 const colorMapping = {
     [window.init.themeSettings.cat_name_misc]: "#dbdbdb",
     [window.init.themeSettings.cat_name_crypto]: "#cbfdc6",
-    [window.init.themeSettings.cat_name_malware]: "#c6d8fd",
-    [window.init.themeSettings.cat_name_email]: "#e9c6fd",
-    [window.init.themeSettings.cat_name_coding]: "#fde2c6",
-    [window.init.themeSettings.cat_name_network]: "#f8fdc6",
+    [window.init.themeSettings.cat_name_forensics]: "#c6d8fd",
+    [window.init.themeSettings.cat_name_rev]: "#e9c6fd",
+    [window.init.themeSettings.cat_name_pwn]: "#fde2c6",
+    [window.init.themeSettings.cat_name_ppc]: "#f8fdc6",
     [window.init.themeSettings.cat_name_web]: "#c6cbfd",
     [window.init.themeSettings.cat_name_blockchains]: "#c6cbfd",
 };
@@ -243,7 +247,7 @@ Alpine.data("ChallengeBoard", function () { return {
     lrn: null,
     selectedId: null,
     category: null,
-    oobe: this.$persist(false),
+    oobe: this.$persist(true),
     sortOrder: this.$persist("Difficulty"),
     filterCondition: this.$persist("All"),
     loopHighlight: this.$persist(false),
@@ -323,10 +327,6 @@ Alpine.data("ChallengeBoard", function () { return {
         mapping[window.init.themeSettings.cat_name_ppc] = window.tagImages.ppc;
         mapping[window.init.themeSettings.cat_name_web] = window.tagImages.web;
         mapping[window.init.themeSettings.cat_name_blockchains] = window.tagImages.blockchains;
-        mapping[window.init.themeSettings.cat_name_malware] = window.tagImages.malware;
-        mapping[window.init.themeSettings.cat_name_email] = window.tagImages.email;
-        mapping[window.init.themeSettings.cat_name_coding] = window.tagImages.coding;
-        mapping[window.init.themeSettings.cat_name_network] = window.tagImages.network;
 
         return this.getCategories().map(v => [v, mapping[v] || null]);
     },

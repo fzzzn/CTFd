@@ -31,8 +31,13 @@
           <div class="cellBody">
             {% set team_name = team.name | urlencode %}
             {% set team_name = team_name.replace('%20', '+') %}
-            <img width="80" height="80" class="cellBodyIcon" src="{{ team.captain.gravatar('404') }}" data-fallback="https://api.dicebear.com/9.x/initials/svg?seed={{team_name}}&backgroundType=gradientLinear" onerror="this.src = this.dataset.fallback;this.onerror='';">
-          </div>
+            <img
+  src="https://api.dicebear.com/7.x/initials/svg?seed={{ team_name | urlencode }}&backgroundColor=77BEF0"
+  width="80"
+  height="80"
+  alt="Team Avatar"
+/>
+</div>
           <div class="cellFooter">
             {{ ngettext('%(members)d member', '%(members)d members', team.members | length, members=team.members | length) }}
           </div>

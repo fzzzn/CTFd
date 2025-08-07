@@ -2,7 +2,6 @@ import Alpine from "alpinejs";
 import CTFd from "./base";
 import { colorHash } from "@ctfdio/ctfd-js/ui";
 import { getOption as getUserScoreOption } from "./utils/graphs/echarts/userscore";
-import { getOption as getCategoryBreakdownOption } from "./utils/graphs/echarts/category-radar";
 import { embed } from "./utils/graphs/echarts/index";
 
 window.Alpine = Alpine;
@@ -11,8 +10,6 @@ Alpine.data("UserGraphs", () => ({
   solves: {data: []},
   fails: {data: []},
   awards: {data: []},
-  challenges: {data: []},
-  categoriesCount: 0,
   solveCount: 0,
   failCount: 0,
   awardCount: 0,
@@ -62,12 +59,10 @@ Alpine.data("UserGraphs", () => ({
     this.solves = await CTFd.pages.users.userSolves(userIdAlias);
     this.fails = await CTFd.pages.users.userFails(userIdAlias);
     this.awards = await CTFd.pages.users.userAwards(userIdAlias);
-    this.challenges = await CTFd.pages.challenges.getChallenges();
     
     this.solveCount = this.solves.meta.count;
     this.failCount = this.fails.meta.count;
     this.awardCount = this.awards.meta.count;
-    this.categoriesCount = new Set(this.challenges.map(challenge => challenge.category)).size;
     
     console.log(this.solves.data);
     
@@ -81,11 +76,6 @@ Alpine.data("UserGraphs", () => ({
 
     if (this.$refs.scoregraph) {
       embed(this.$refs.scoregraph, userScoreOption);
-    }
-
-    if (this.$refs.categoryRadar) {
-      const categoryRadarOption = getCategoryBreakdownOption(user.id, user.name, this.solves.data, this.challenges);
-      embed(this.$refs.categoryRadar, categoryRadarOption);
     }
   },
 }));
