@@ -29,7 +29,6 @@ from CTFd.models import (
     Files,
     Notifications,
     Pages,
-    Solutions,
     Teams,
     Users,
     UserTokens,
@@ -66,7 +65,8 @@ from CTFd.utils.security.signing import (
     unserialize,
 )
 from CTFd.utils.uploads import get_uploader, upload_file
-from CTFd.utils.user import authed, get_current_team, get_current_user, get_ip, is_admin
+from CTFd.utils.user import authed, get_current_team, get_current_user, is_admin
+from flask_babel import lazy_gettext as _l
 
 views = Blueprint("views", __name__)
 
@@ -166,19 +166,19 @@ def setup():
             team_name_email_check = validators.validate_email(name)
 
             if not valid_email:
-                errors.append("Please enter a valid email address")
+                errors.append(_l("Please enter a valid email address"))
             if names:
-                errors.append("That user name is already taken")
+                errors.append(_l("That user name is already taken"))
             if team_name_email_check is True:
-                errors.append("Your user name cannot be an email address")
+                errors.append(_l("Your user name cannot be an email address"))
             if emails:
-                errors.append("That email has already been used")
+                errors.append(_l("That email has already been used"))
             if pass_short:
-                errors.append("Pick a longer password")
+                errors.append(_l("Pick a longer password"))
             if pass_long:
-                errors.append("Pick a shorter password")
+                errors.append(_l("Pick a shorter password"))
             if name_len:
-                errors.append("Pick a longer user name")
+                errors.append(_l("Pick a longer user name"))
 
             if len(errors) > 0:
                 return render_template(
@@ -195,7 +195,7 @@ def setup():
             )
 
             # Create an empty index page
-            page = Pages(title=ctf_name, route="index", content="", draft=False)
+            page = Pages(title=None, route="index", content="", draft=False)
 
             # Upload banner
             default_ctf_banner_location = url_for("views.themes", path="img/logo.png")
@@ -203,26 +203,8 @@ def setup():
             if ctf_banner:
                 f = upload_file(file=ctf_banner, page_id=page.id)
                 default_ctf_banner_location = url_for("views.files", path=f.location)
-                set_config("ctf_banner", f.location)
 
             # Splice in our banner
-            index = f"""<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{default_ctf_banner_location}" />
-        <h3 class="text-center">
-            <p>A cool CTF platform from <a href="https://ctfd.io">ctfd.io</a></p>
-            <p>Follow us on social media:</p>
-            <a href="https://twitter.com/ctfdio"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>&nbsp;
-            <a href="https://facebook.com/ctfdio"><i class="fab fa-facebook fa-2x" aria-hidden="true"></i></a>&nbsp;
-            <a href="https://github.com/ctfd"><i class="fab fa-github fa-2x" aria-hidden="true"></i></a>
-        </h3>
-        <br>
-        <h4 class="text-center">
-            <a href="admin">Click here</a> to login and setup your CTF
-        </h4>
-    </div>
-</div>"""
-            page.content = index
 
             # Visibility
             set_config(ConfigTypes.CHALLENGE_VISIBILITY, challenge_visibility)
@@ -353,7 +335,7 @@ def settings():
         team_url = url_for("teams.private")
         infos.append(
             markup(
-                f'In order to participate you must either <a href="{team_url}">join or create a team</a>.'
+                _l('In order to participate you must either <a href="%(team_url)s">join or create a team</a>.', team_url=team_url)
             )
         )
 
@@ -364,11 +346,10 @@ def settings():
     if get_config("verify_emails") and not user.verified:
         confirm_url = markup(url_for("auth.confirm"))
         infos.append(
-            markup(
+            markup(_l(
                 "Your email address isn't confirmed!<br>"
                 "Please check your email to confirm your email address.<br><br>"
-                f'To have the confirmation email resent please <a href="{confirm_url}">click here</a>.'
-            )
+                'To have the confirmation email resent please <a href="%(confirm_url)s">click here</a>.', confirm_url=confirm_url))
         )
 
     return render_template(
@@ -400,7 +381,8 @@ def static_html(route):
     else:
         if page.auth_required and authed() is False:
             return redirect(url_for("auth.login", next=request.full_path))
-
+        if route == "index":
+            return render_template("index.html", content=page.html, title=page.title)
         return render_template("page.html", content=page.html, title=page.title)
 
 
@@ -449,69 +431,53 @@ def files(path):
             # User cannot view challenges based on challenge visibility
             # e.g. ctf requires registration but user isn't authed or
             # ctf requires admin account but user isn't admin
-
-            # Allow downloads if a valid token is provided
-            # For example with wget downloads
-            token = request.args.get("token", "")
-            try:
-                data = unserialize(token, max_age=3600)
-            # The token isn't expired or broken
-            except (BadTimeSignature, SignatureExpired, BadSignature):
-                abort(403)
-
-            # Determine the user and team asking to download
-            user_id = data.get("user_id")
-            team_id = data.get("team_id")
-            file_id = data.get("file_id")
-            user = Users.query.filter_by(id=user_id).first()
-            team = Teams.query.filter_by(id=team_id).first()
-
             if not ctftime():
                 # It's not CTF time. The only edge case is if the CTF is ended
                 # but we have view_after_ctf enabled
                 if ctf_ended() and view_after_ctf():
                     pass
                 else:
-                    if user.type == "admin":
-                        # We allow admins to download files by URL before CTF start
-                        pass
-                    else:
-                        # In all other situations we should block challenge files
+                    # In all other situations we should block challenge files
+                    abort(403)
+
+            # Allow downloads if a valid token is provided
+            token = request.args.get("token", "")
+            try:
+                data = unserialize(token, max_age=3600)
+                user_id = data.get("user_id")
+                team_id = data.get("team_id")
+                file_id = data.get("file_id")
+                user = Users.query.filter_by(id=user_id).first()
+                team = Teams.query.filter_by(id=team_id).first()
+
+                # Check user is admin if challenge_visibility is admins only
+                if (
+                    get_config(ConfigTypes.CHALLENGE_VISIBILITY) == "admins"
+                    and user.type != "admin"
+                ):
+                    abort(403)
+
+                # Check that the user exists and isn't banned
+                if user:
+                    if user.banned:
                         abort(403)
-
-            # Check user is admin if challenge_visibility is admins only
-            if (
-                get_config(ConfigTypes.CHALLENGE_VISIBILITY) == "admins"
-                and user.type != "admin"
-            ):
-                abort(403)
-
-            # Check that the user exists and isn't banned
-            if user:
-                if user.banned:
+                else:
                     abort(403)
-            else:
-                abort(403)
 
-            # Check that the team isn't banned
-            if team:
-                if team.banned:
+                # Check that the team isn't banned
+                if team:
+                    if team.banned:
+                        abort(403)
+                else:
+                    pass
+
+                # Check that the token properly refers to the file
+                if file_id != f.id:
                     abort(403)
-            else:
-                pass
 
-            # Check that the token properly refers to the file
-            if file_id != f.id:
+            # The token isn't expired or broken
+            except (BadTimeSignature, SignatureExpired, BadSignature):
                 abort(403)
-
-    elif f.type == "solution":
-        s = Solutions.query.filter_by(id=f.solution_id).first_or_404()
-        if s.state != "visible" or s.challenge.state != "visible":
-            # Admins can see solution files for preview purposes
-            if current_user.is_admin() is True:
-                pass
-            else:
-                abort(404)
 
     uploader = get_uploader()
     try:
@@ -538,7 +504,7 @@ def themes(theme, path):
         if cand_path is None:
             abort(404)
         if os.path.isfile(cand_path):
-            return send_file(cand_path, max_age=3600)
+            return send_file(cand_path)
     abort(404)
 
 
@@ -561,7 +527,7 @@ def themes_beta(theme, path):
         if cand_path is None:
             abort(404)
         if os.path.isfile(cand_path):
-            return send_file(cand_path, max_age=3600)
+            return send_file(cand_path)
     abort(404)
 
 
@@ -572,23 +538,6 @@ def healthcheck():
     if check_config() is False:
         return "ERR", 500
     return "OK", 200
-
-
-@views.route("/debug")
-def debug():
-    if app.config.get("SAFE_MODE") is True:
-        ip = get_ip()
-        headers = dict(request.headers)
-        # Remove Cookie item
-        headers.pop("Cookie", None)
-        resp = ""
-        resp += f"IP: {ip}\n"
-        for k, v in headers.items():
-            resp += f"{k}: {v}\n"
-        r = make_response(resp)
-        r.mimetype = "text/plain"
-        return r
-    abort(404)
 
 
 @views.route("/robots.txt")
