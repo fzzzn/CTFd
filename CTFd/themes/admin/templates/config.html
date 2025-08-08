@@ -132,6 +132,11 @@
 						<i class="fa fa-network-wired action-icon"></i>MajorLeagueCyber
 					</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0 py-1" href="#discord" role="tab" data-toggle="tab">
+						<i class="fab fa-discord action-icon"></i>Discord Webhooks
+					</a>
+				</li>
 				
 				<!-- Plugins -->
 				{% set plugins = get_configurable_plugins() %}
@@ -233,6 +238,8 @@
 				{% include "admin/configs/social.html" %}
 
 				{% include "admin/configs/mlc.html" %}
+
+				{% include "admin/configs/discord.html" %}
 
 				<!-- Plugins -->
 				

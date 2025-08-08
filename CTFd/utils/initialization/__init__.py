@@ -43,6 +43,7 @@ from CTFd.utils.user import (
     get_locale,
     is_admin,
 )
+from CTFd.utils.integrations.discord_hooks import init_discord_webhook_integration
 
 
 def init_cli(app):
@@ -193,6 +194,9 @@ def init_events(app):
     else:
         app.events_manager = EventManager()
     app.events_manager.listen()
+    
+    # Initialize Discord webhook integration
+    init_discord_webhook_integration(app)
 
 
 def init_request_processors(app):

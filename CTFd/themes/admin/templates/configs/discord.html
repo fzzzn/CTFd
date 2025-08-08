@@ -1,0 +1,101 @@
+<div role="tabpanel" class="tab-pane config-section" id="discord">
+	<form method="POST" autocomplete="off" class="w-100">
+		<div style="display:flex; justify-content:space-between;">
+			<h6>
+				Discord Webhook Integration
+			</h6>
+			<span data-toggle="tooltip" data-placement="top" title="Send CTFd notifications and announcements to Discord channels via webhooks." aria-hidden="true">
+				<i class="fas fa-question-circle"></i>
+			</span>
+		</div>
+		<small>
+			Create a Discord webhook in your server settings and paste the URL below to receive CTFd notifications in Discord. Learn more about <a href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks" target="_blank">Discord webhooks</a>.
+		</small>
+		<br><br>
+		
+		<div class="form-group">
+			<label>
+				Webhook URL
+			</label>
+			<input class="form-control" id="discord_webhook_url" name="discord_webhook_url" type="url" placeholder="https://discord.com/api/webhooks/..."
+				{% if discord_webhook_url is defined and discord_webhook_url != None %}value="{{ discord_webhook_url }}"{% endif %}>
+			<small class="form-text text-muted">
+				Discord webhook URL from your server settings
+			</small>
+		</div>
+
+		<div class="form-group">
+			<label>
+				<input name="discord_notifications_enabled" id="discord_notifications_enabled" type="checkbox" 
+					{% if discord_notifications_enabled %}checked{% endif %}>
+				Enable Discord Notifications
+			</label>
+			<small class="form-text text-muted">
+				Send general notifications and announcements to Discord
+			</small>
+		</div>
+
+		<div class="form-group">
+			<label>
+				<input name="discord_solves_enabled" id="discord_solves_enabled" type="checkbox" 
+					{% if discord_solves_enabled %}checked{% endif %}>
+				Enable Discord Solve Notifications
+			</label>
+			<small class="form-text text-muted">
+				Send first blood notifications to Discord when challenges are solved
+			</small>
+		</div>
+
+		<div class="form-group">
+			<button type="button" id="discord_test_webhook" class="btn btn-info">
+				<i class="fas fa-paper-plane"></i> Test Webhook
+			</button>
+			<small class="form-text text-muted">
+				Send a test message to verify your webhook configuration
+			</small>
+		</div>
+
+		<button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+	</form>
+</div>
+
+<script>
+document.getElementById('discord_test_webhook').addEventListener('click', function() {
+	const webhookUrl = document.getElementById('discord_webhook_url').value;
+	
+	if (!webhookUrl) {
+		alert('Please enter a webhook URL first');
+		return;
+	}
+	
+	const button = this;
+	const originalText = button.innerHTML;
+	button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+	button.disabled = true;
+	
+	CTFd.fetch('/api/v1/integrations/discord/test', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			webhook_url: webhookUrl
+		})
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.success) {
+			alert('✅ Test message sent successfully! Check your Discord channel.');
+		} else {
+			alert('❌ Test failed: ' + (data.error || 'Unknown error'));
+		}
+	})
+	.catch(error => {
+		alert('❌ Test failed: ' + error.message);
+	})
+	.finally(() => {
+		button.innerHTML = originalText;
+		button.disabled = false;
+	});
+});
+</script>

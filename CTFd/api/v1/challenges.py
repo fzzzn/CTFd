@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from typing import List  # noqa: I001
 
 from flask import abort, render_template, request, url_for
+from flask import current_app
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 
@@ -679,6 +680,34 @@ class ChallengeAttempt(Resource):
                     )
                     clear_standings()
                     clear_challenges()
+                    
+                    # Send Discord notification for solve
+                    try:
+                        from CTFd.utils.integrations.discord_hooks import send_solve_notification_to_discord
+                        from CTFd.models import Submissions
+                        
+                        # Create a submission object for the Discord notification
+                        # We need to get the actual submission that was just created
+                        submission = Submissions.query.filter_by(
+                            account_id=user.account_id,
+                            challenge_id=challenge_id,
+                            type="correct"
+                        ).order_by(Submissions.id.desc()).first()
+                        
+                        print(f"DEBUG: Attempting Discord notification - User: {user.name}, Team: {team.name if team else None}, Challenge: {challenge.name}")
+                        
+                        if submission:
+                            send_solve_notification_to_discord(submission)
+                            print(f"DEBUG: Discord notification sent for submission ID: {submission.id}")
+                        else:
+                            print("DEBUG: No submission found for Discord notification")
+                        
+                    except Exception as e:
+                        # Don't let Discord errors break the solve flow
+                        print(f"Discord notification failed: {e}")
+                        current_app.logger.error(f"Discord solve notification failed: {e}")
+                        import traceback
+                        traceback.print_exc()
 
                 log(
                     "submissions",

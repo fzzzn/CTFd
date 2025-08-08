@@ -10,6 +10,7 @@ from CTFd.api.v1.exports import exports_namespace
 from CTFd.api.v1.files import files_namespace
 from CTFd.api.v1.flags import flags_namespace
 from CTFd.api.v1.hints import hints_namespace
+from CTFd.api.v1.integrations import integrations_namespace
 from CTFd.api.v1.notifications import notifications_namespace
 from CTFd.api.v1.pages import pages_namespace
 from CTFd.api.v1.schemas import (
@@ -56,6 +57,7 @@ CTFd_API_v1.add_namespace(tags_namespace, "/tags")
 CTFd_API_v1.add_namespace(topics_namespace, "/topics")
 CTFd_API_v1.add_namespace(awards_namespace, "/awards")
 CTFd_API_v1.add_namespace(hints_namespace, "/hints")
+CTFd_API_v1.add_namespace(integrations_namespace, "/integrations")
 CTFd_API_v1.add_namespace(flags_namespace, "/flags")
 CTFd_API_v1.add_namespace(submissions_namespace, "/submissions")
 CTFd_API_v1.add_namespace(scoreboard_namespace, "/scoreboard")
