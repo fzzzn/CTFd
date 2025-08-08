@@ -29,7 +29,7 @@ body.titleScreenVisible {
 
     .homeScreen {
         width: 100%;
-        padding-top: 30vh;
+        padding-top: 10vh;
         padding-bottom: 6rem;
         height: 100vh;
         height: calc(var(--1dvh, 1vh) * 100);
@@ -42,11 +42,60 @@ body.titleScreenVisible {
     }
 
     .logo {
-        width: clamp(250px, 30vw, 600px);
-        max-height: 40vh;
+        width: 20rem;
+        height: 20rem;
     }
 
-    #homeCountdown {
+    .homeSponsors {
+        height: 100vh;
+        height: 100dvh;
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .Heading {
+        color: #3ab0a1;
+        font-weight: 700;
+        font-size: 2rem;
+        margin: 1.5em 0;
+    }
+
+
+    .Heading::before, .Heading::after {
+        content: '';
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border: 5px solid #3ab0a1;
+        box-sizing: border-box;
+        border-radius: 3px;
+        vertical-align: 0.075em;
+        transform: rotate(45deg);
+    }
+
+    .Heading::before {
+        margin-right: 0.75rem;
+    }
+
+    .Heading::after {
+        margin-left: 0.75rem;
+    }
+
+    .sponsorsOl {
+        text-align: center;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .sponsorsOl li {
+        display: inline-block;
+    }
+
+  #homeCountdown {
         margin-top: 3rem;
         font-size: 1.25rem;
         font-weight: 550;
