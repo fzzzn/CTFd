@@ -39,8 +39,8 @@
                 {% endif %}
               {% endif %}
             </div>
-	   <div>{{ ngettext('%(solves)d solve', '%(solves)d solves', standing.count | int, solves=standing.count | int) }}</div>
-          </div>
+            <div>{{ ngettext('%(solves)d solve', '%(solves)d solves', standing.count | int, solves=standing.count | int) }}</div>
+            </div>
           <div class="listItemScore digits5">
             <span>
               <span class="listItemScoreValue">{{ standing.score }}</span>&nbsp;<span class="listItemScoreP">P</span>

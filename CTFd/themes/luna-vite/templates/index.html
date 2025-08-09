@@ -4,11 +4,11 @@
 <div id="homeWrapper">
     <div class="homeContent">
         <div class="homeScreen">
-            <img class="logo" src="{{ url_for('views.files', path=Configs.ctf_logo) if Configs.ctf_logo else url_for('views.themes', path='img/logos/sekai2.svg') }}" alt="Project SEKAI CTF" />
+            <img class="logo" src="{{ url_for('views.files', path=Configs.ctf_logo) if Configs.ctf_logo else url_for('views.themes', path='img/logos/sekai2.svg') }}" alt="SSS CTF" />
             <span id="homeCountdown">Hai orang terpilih!</span>
         </div>
         <div class="homeScreen">
-            <div class="Heading">Sponsored By</div>
+            <div class="Heading" style="padding-top: 20rem;">Sponsored By</div>
             <ol class="sponsorsOl">
                 <li>
                     <a href="https://karyasija.id" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
@@ -22,6 +22,10 @@
                     <a href="https://rizkyfauzan.id" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
                         <img src="https://cdn.rizkyfauzan.id/avatar.webp" alt="Atmind Infra" style="max-width: 15rem" />
                     </a>
+                </li>
+                <br>
+                <li>
+                    <img src="https://galeri.aryok.tech/_next/image?url=https%3A%2F%2Fqcqejwhspgjyqjxjiwku.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fphotos%2F1754718542521-kskcweu39nh.png&w=1200&q=75" alt="Ketua" style="max-width: 15rem" />
                 </li>
             </ol>
         </div>
@@ -77,11 +81,8 @@
         <a href="https://ctfd.io" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
             <img src="{{ url_for('views.themes', path='img/logos/ctfd.svg') }}" alt="CTFd" />
         </a>
-        <a href="https://sekai.1a23.studio" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
-            <img src="{{ url_for('views.themes', path='img/logos/team2.svg') }}" style="transform: scale(1.2)" alt="Project SEKAI" />
-        </a>
-        <a href="https://1a23.com" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
-            <img src="{{ url_for('views.themes', path='img/logos/1a23-sq.svg') }}" alt="1A23 Studio" />
+        <a href="https://karyasija.id" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
+            <img src="{{ url_for('views.themes', path='img/logos/ks.svg') }}" alt="KaryaSija" style="max-width: 15rem" />
         </a>
     </div>
     <div class="logoBox">
