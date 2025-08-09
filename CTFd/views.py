@@ -410,6 +410,19 @@ def privacy():
         abort(404)
 
 
+@views.route("/rules")
+def rules():
+    rules_url = get_config("rules_url")
+    rules_text = get_config("rules_text")
+    if rules_url:
+        return redirect(rules_url)
+    elif rules_text:
+        return render_template("page.html", content=build_markdown(rules_text))
+    else:
+        # Use the custom rules template if no rules_text is configured
+        return render_template("rules.html")
+
+
 @views.route("/files", defaults={"path": ""})
 @views.route("/files/<path:path>")
 def files(path):

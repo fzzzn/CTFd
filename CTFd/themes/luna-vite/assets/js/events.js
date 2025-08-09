@@ -35,11 +35,40 @@ export function checkNotificationPromise() {
 export default root => {
     const source = new EventSource(root + "/events");
     const wc = new WindowController();
+    
+    // Initialize Howl with autoplay disabled to avoid AudioContext issues
     const howl = new Howl({
         src: [
             root + "/themes/luna-vite/static/sounds/notification.webm",
             root + "/themes/luna-vite/static/sounds/notification.mp3"
-        ]
+        ],
+        autoplay: false,
+        preload: true
+    });
+
+    // Flag to track if audio context has been unlocked
+    let audioUnlocked = false;
+
+    // Function to unlock audio context on first user interaction
+    const unlockAudio = () => {
+        if (!audioUnlocked) {
+            // Try to unlock audio context
+            howl.once('unlock', () => {
+                audioUnlocked = true;
+                console.log('Audio context unlocked');
+            });
+            
+            // Play a silent sound to unlock audio context
+            howl.play();
+            howl.stop();
+            audioUnlocked = true;
+        }
+    };
+
+    // Add event listeners for user interactions to unlock audio
+    const unlockEvents = ['touchstart', 'touchend', 'mousedown', 'keydown', 'click'];
+    unlockEvents.forEach(event => {
+        document.addEventListener(event, unlockAudio, { once: true, passive: true });
     });
 
     const notyf = new Notyf({
@@ -67,7 +96,18 @@ export default root => {
 
                 // Only play sounds in the master tab
                 if (data.sound) {
-                    howl.play();
+                    // Ensure audio context is unlocked before playing
+                    if (audioUnlocked) {
+                        howl.play();
+                    } else {
+                        // Try to unlock audio and then play
+                        unlockAudio();
+                        setTimeout(() => {
+                            if (audioUnlocked) {
+                                howl.play();
+                            }
+                        }, 100);
+                    }
                 }
             },
             false

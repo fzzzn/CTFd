@@ -1,0 +1,145 @@
+{% extends "templates/framed.html" %}
+
+{% block title %}Rules{% endblock %}
+{% block subtitle %}{% trans %}Competition Rules{% endtrans %}{% endblock %}
+
+{% block framedContent %}
+<div class="frameContentWrapper">
+    {% include "components/errors.html" %}
+
+    <div class="rulesContent">
+        <div class="rulesSection">
+            <h3>{% trans %}General Rules{% endtrans %}</h3>
+            <ul>
+                <li>{% trans %}Be respectful to all participants and organizers{% endtrans %}</li>
+                <li>{% trans %}No sharing of flags or solutions during the competition{% endtrans %}</li>
+                <li>{% trans %}Use of automated tools for brute force attacks is prohibited{% endtrans %}</li>
+                <li>{% trans %}Do not attack the competition infrastructure{% endtrans %}</li>
+            </ul>
+        </div>
+
+        <div class="rulesSection">
+            <h3>{% trans %}Technical Rules{% endtrans %}</h3>
+            <ul>
+                <li>{% trans %}Each challenge has a unique flag in the format: SSS{...}{% endtrans %}</li>
+                <li>{% trans %}Flags are case-sensitive unless otherwise specified{% endtrans %}</li>
+                <li>{% trans %}Challenges may have multiple parts or dependencies{% endtrans %}</li>
+            </ul>
+        </div>
+
+        <div class="rulesSection">
+            <h3>{% trans %}Scoring{% endtrans %}</h3>
+            <ul>
+                <li>{% trans %}Points are awarded for each solved challenge{% endtrans %}</li>
+                <li>{% trans %}Ties are broken by the time of the last submission{% endtrans %}</li>
+                <li>{% trans %}The scoreboard will be frozen 1 hour before the competition ends{% endtrans %}</li>
+            </ul>
+        </div>
+
+        <div class="rulesSection">
+            <h3>{% trans %}Prohibited Actions{% endtrans %}</h3>
+            <ul>
+                <li>{% trans %}Attacking other teams or participants{% endtrans %}</li>
+                <li>{% trans %}Attempting to gain unauthorized access to the platform{% endtrans %}</li>
+                <li>{% trans %}Using multiple accounts per person{% endtrans %}</li>
+                <li>{% trans %}Disrupting the competition for other participants{% endtrans %}</li>
+            </ul>
+        </div>
+
+        <div class="rulesSection">
+            <h3>{% trans %}Violations{% endtrans %}</h3>
+            <p>{% trans %}Violation of these rules may result in:{% endtrans %}</p>
+            <ul>
+                <li>{% trans %}Warning from organizers{% endtrans %}</li>
+                <li>{% trans %}Point deduction{% endtrans %}</li>
+                <li>{% trans %}Temporary or permanent disqualification{% endtrans %}</li>
+                <li>{% trans %}Removal from the competition{% endtrans %}</li>
+            </ul>
+        </div>
+
+        <div class="rulesFooter">
+            <p><strong>{% trans %}Good luck and have fun!{% endtrans %}</strong></p>
+            <p><small>{% trans %}Rules are subject to change. Participants will be notified of any updates.{% endtrans
+                    %}</small></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<style>
+    .rulesContent {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .rulesSection {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .rulesSection h3 {
+        color: var(--primary-color, #00d4aa);
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .rulesSection ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .rulesSection li {
+        margin-bottom: 0.75rem;
+        padding-left: 1.5rem;
+        position: relative;
+    }
+
+    .rulesSection li:before {
+        content: "▶";
+        color: var(--primary-color, #00d4aa);
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .rulesSection p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .rulesFooter {
+        text-align: center;
+        margin-top: 3rem;
+        padding: 2rem;
+        background: rgba(0, 212, 170, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 212, 170, 0.2);
+    }
+
+    .rulesFooter p {
+        margin-bottom: 0.5rem;
+    }
+
+    .rulesFooter strong {
+        color: var(--primary-color, #00d4aa);
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+        .rulesContent {
+            padding: 1rem;
+        }
+
+        .rulesSection {
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %}
