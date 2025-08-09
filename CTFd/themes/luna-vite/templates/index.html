@@ -7,7 +7,24 @@
             <img class="logo" src="{{ url_for('views.files', path=Configs.ctf_logo) if Configs.ctf_logo else url_for('views.themes', path='img/logos/sekai2.svg') }}" alt="Project SEKAI CTF" />
             <span id="homeCountdown">Hai orang terpilih!</span>
         </div>
-        <div class="homeFiller"></div>
+        <div class="homeScreen">
+            <div class="Heading">Sponsored By</div>
+            <ol class="sponsorsOl">
+                <li>
+                    <a href="https://karyasija.id" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
+                        <img src="{{ url_for('views.themes', path='img/logos/ks.svg') }}" alt="KaryaSija" style="max-width: 15rem" />
+                    </a>
+                </li>
+            </ol>
+            <div class="Heading">Atmind</div>
+            <ol class="sponsorsOl">
+                <li>
+                    <a href="https://rizkyfauzan.id" target="_blank" rel="noopener noreferrer" onClick="(e)=> e.stopPropagation()">
+                        <img src="https://cdn.rizkyfauzan.id/avatar.webp" alt="Atmind Infra" style="max-width: 15rem" />
+                    </a>
+                </li>
+            </ol>
+        </div>
     </div>
     <div class="buttonOverlay">
         <a href="{{ (Configs.theme_settings or {}).get('social_link_url', 'https://karyasija.id') }}"  target="_blank" class="button iconButton shade discordButton" data-tippy-lyrics>
@@ -16,6 +33,10 @@
         {% include 'components/status.html' %}
         {% include 'components/menu.html' %}
         <div class="homeCTAButtons">
+            <a href="/rules" class="button textButton shade homeCTAButton">
+                <iconify-icon icon="mdi:book-open-variant" style="transform: translate(4px, -10px) scale(1.1);"></iconify-icon>
+                <span>{% trans %}Rules{% endtrans %}</span>
+            </a>
             {% if authed() %}
             <a href="{{ url_for('scoreboard.listing') }}" class="button textButton shade homeCTAButton">
                 <iconify-icon icon="mdi:podium" style="transform: translate(4px, -10px) scale(1.1);"></iconify-icon>
