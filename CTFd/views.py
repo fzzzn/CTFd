@@ -37,21 +37,11 @@ from CTFd.models import (
 from CTFd.utils import config, get_config, set_config
 from CTFd.utils import user as current_user
 from CTFd.utils import validators
-from CTFd.utils.config import is_setup, is_teams_mode
+from CTFd.utils.config import can_send_mail, is_setup, is_teams_mode
 from CTFd.utils.config.pages import build_markdown, get_page
 from CTFd.utils.config.visibility import challenges_visible
 from CTFd.utils.dates import ctf_ended, ctftime, view_after_ctf
 from CTFd.utils.decorators import authed_only
-from CTFd.utils.email import (
-    DEFAULT_PASSWORD_RESET_BODY,
-    DEFAULT_PASSWORD_RESET_SUBJECT,
-    DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_BODY,
-    DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_SUBJECT,
-    DEFAULT_USER_CREATION_EMAIL_BODY,
-    DEFAULT_USER_CREATION_EMAIL_SUBJECT,
-    DEFAULT_VERIFICATION_EMAIL_BODY,
-    DEFAULT_VERIFICATION_EMAIL_SUBJECT,
-)
 from CTFd.utils.health import check_config, check_database
 from CTFd.utils.helpers import get_errors, get_infos, markup
 from CTFd.utils.modes import USERS_MODE
@@ -109,6 +99,7 @@ def setup():
                 )
             )
             verify_emails = request.form.get("verify_emails")
+            social_shares = request.form.get("social_shares")
             team_size = request.form.get("team_size")
 
             # Style
@@ -215,6 +206,9 @@ def setup():
             # Verify emails
             set_config("verify_emails", verify_emails)
 
+            # Social shares
+            set_config("social_shares", social_shares)
+
             # Team Size
             set_config("team_size", team_size)
 
@@ -225,39 +219,6 @@ def setup():
             set_config("mail_username", None)
             set_config("mail_password", None)
             set_config("mail_useauth", None)
-
-            # Set up default emails
-            set_config("verification_email_subject", DEFAULT_VERIFICATION_EMAIL_SUBJECT)
-            set_config("verification_email_body", DEFAULT_VERIFICATION_EMAIL_BODY)
-
-            set_config(
-                "successful_registration_email_subject",
-                DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_SUBJECT,
-            )
-            set_config(
-                "successful_registration_email_body",
-                DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_BODY,
-            )
-
-            set_config(
-                "user_creation_email_subject", DEFAULT_USER_CREATION_EMAIL_SUBJECT
-            )
-            set_config("user_creation_email_body", DEFAULT_USER_CREATION_EMAIL_BODY)
-
-            set_config("password_reset_subject", DEFAULT_PASSWORD_RESET_SUBJECT)
-            set_config("password_reset_body", DEFAULT_PASSWORD_RESET_BODY)
-
-            set_config(
-                "password_change_alert_subject",
-                "Password Change Confirmation for {ctf_name}",
-            )
-            set_config(
-                "password_change_alert_body",
-                (
-                    "Your password for {ctf_name} has been changed.\n\n"
-                    "If you didn't request a password change you can reset your password here: {url}"
-                ),
-            )
 
             set_config("setup", True)
 
@@ -343,13 +304,13 @@ def settings():
 
     prevent_name_change = get_config("prevent_name_change")
 
-    if get_config("verify_emails") and not user.verified:
-        confirm_url = markup(url_for("auth.confirm"))
+    if can_send_mail() and not user.verified:
+        confirm_url = markup(url_for("auth.confirm", flow="init"))
         infos.append(
             markup(_l(
                 "Your email address isn't confirmed!<br>"
-                "Please check your email to confirm your email address.<br><br>"
-                'To have the confirmation email resent please <a href="%(confirm_url)s">click here</a>.', confirm_url=confirm_url))
+                f'To confirm your email address please <a href="{confirm_url}">click here</a>.'
+            )
         )
 
     return render_template(

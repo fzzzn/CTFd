@@ -83,7 +83,7 @@ def test_page_requiring_auth():
         with app.test_client() as client:
             r = client.get("/this-is-a-route")
             assert r.status_code == 302
-            assert r.location == "http://localhost/login?next=%2Fthis-is-a-route%3F"
+            assert r.location == "/login?next=%2Fthis-is-a-route%3F"
 
         register_user(app)
         client = login_as_user(app)
@@ -135,7 +135,7 @@ def test_themes_handler():
     app = create_ctfd()
     with app.app_context():
         with app.test_client() as client:
-            r = client.get("/themes/core/static/css/main.min.css")
+            r = client.get("/themes/core/static/manifest.json")
             assert r.status_code == 200
             r = client.get("/themes/core/static/css/404_NOT_FOUND")
             assert r.status_code == 404
