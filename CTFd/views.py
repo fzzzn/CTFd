@@ -307,9 +307,11 @@ def settings():
     if can_send_mail() and not user.verified:
         confirm_url = markup(url_for("auth.confirm", flow="init"))
         infos.append(
-            markup(_l(
-                "Your email address isn't confirmed!<br>"
-                f'To confirm your email address please <a href="{confirm_url}">click here</a>.'
+            markup(
+                _l(
+                    "Your email address isn't confirmed!<br>"
+                    f'To confirm your email address please <a href="{confirm_url}">click here</a>.'
+                )
             )
         )
 
