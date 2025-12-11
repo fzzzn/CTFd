@@ -17,8 +17,8 @@
 			<label>
 				Webhook URL
 			</label>
-			<input class="form-control" id="discord_webhook_url" name="discord_webhook_url" type="url" placeholder="https://discord.com/api/webhooks/..."
-				{% if discord_webhook_url is defined and discord_webhook_url != None %}value="{{ discord_webhook_url }}"{% endif %}>
+			<input class="form-control" id="discord_webhook_url" name="webhook_url" type="url" placeholder="https://discord.com/api/webhooks/..."
+				{% if webhook_url is defined and webhook_url != None %}value="{{ webhook_url }}"{% endif %}>
 			<small class="form-text text-muted">
 				Discord webhook URL from your server settings
 			</small>
@@ -26,8 +26,19 @@
 
 		<div class="form-group">
 			<label>
-				<input name="discord_notifications_enabled" id="discord_notifications_enabled" type="checkbox" 
-					{% if discord_notifications_enabled %}checked{% endif %}>
+				Webhook Display Name
+			</label>
+			<input class="form-control" id="discord_webhook_name" name="webhook_name" type="text" placeholder="CTFd"
+				{% if webhook_name is defined and webhook_name != None %}value="{{ webhook_name }}"{% endif %}>
+			<small class="form-text text-muted">
+				Custom name for the webhook bot (defaults to CTF name if not set)
+			</small>
+		</div>
+
+		<div class="form-group">
+			<label>
+				<input name="notifications_enabled" id="discord_notifications_enabled" type="checkbox" 
+					{% if notifications_enabled %}checked{% endif %}>
 				Enable Discord Notifications
 			</label>
 			<small class="form-text text-muted">
@@ -37,8 +48,8 @@
 
 		<div class="form-group">
 			<label>
-				<input name="discord_solves_enabled" id="discord_solves_enabled" type="checkbox" 
-					{% if discord_solves_enabled %}checked{% endif %}>
+				<input name="solves_enabled" id="discord_solves_enabled" type="checkbox" 
+					{% if solves_enabled %}checked{% endif %}>
 				Enable Discord Solve Notifications
 			</label>
 			<small class="form-text text-muted">

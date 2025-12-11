@@ -107,9 +107,9 @@ def send_notification_to_discord(notification_data):
 
     color = color_map.get(notif_type, 0x5CC9BB)
 
-    # Get CTF name for username
-    ctf_name = get_config("ctf_name", "CTFd")
-    username = f"{ctf_name} Notifications"
+    # Get webhook name (custom name or fall back to CTF name)
+    webhook_name = get_config("discord_webhook_name") or get_config("ctf_name", "CTFd")
+    username = f"{webhook_name} Notifications"
 
     print(
         f"DEBUG: Sending notification to Discord - Title: '{title}', Type: '{notif_type}', Color: {hex(color)}")
@@ -152,7 +152,8 @@ def send_solve_to_discord(webhook_url, challenge, user, team, is_first_blood=Fal
     team_name = team.name if team else None
 
     # Prepare solve notification with first blood detection
-    ctf_name = get_config("ctf_name", "CTFd")
+    # Get webhook name (custom name or fall back to CTF name)
+    webhook_name = get_config("discord_webhook_name") or get_config("ctf_name", "CTFd")
 
     # Choose title and color based on first blood status
     if is_first_blood:
@@ -178,7 +179,7 @@ def send_solve_to_discord(webhook_url, challenge, user, team, is_first_blood=Fal
         title=title,
         content=description,
         color=color,
-        username=f"{ctf_name} Solves"
+        username=f"{webhook_name} Solves"
     )
 
     print(f"DEBUG: Discord webhook result: {result}")
@@ -197,12 +198,13 @@ def test_discord_webhook():
     if not webhook_url:
         return False
 
-    ctf_name = get_config("ctf_name", "CTFd")
+    # Get webhook name (custom name or fall back to CTF name)
+    webhook_name = get_config("discord_webhook_name") or get_config("ctf_name", "CTFd")
 
     return send_discord_webhook(
         webhook_url=webhook_url,
         title="🔧 CTFd Discord Integration Test",
         content="Discord webhook integration is working correctly!",
         color=0x5CC9BB,
-        username=f"{ctf_name} Test"
+        username=f"{webhook_name} Test"
     )
